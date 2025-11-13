@@ -1,33 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN"> <!-- 改成中文语言，适配中文显示 -->
 <head>
     <meta charset="UTF-8">
-    <!-- 网页标题（浏览器标签上显示的名字） -->
-    <title>sword</title>
-    <!-- 简单样式：让内容居中、图片不超出屏幕 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- 适配手机 -->
+    <title>sword - 个人主页</title> <!-- 浏览器标签名更新 -->
     <style>
+        /* 全局样式：统一字体、居中、边距 */
         body {
-            text-align: center; /* 文字和图片居中 */
-            margin: 20px; /* 页面边距，不贴边 */
+            text-align: center;
+            margin: 0;
+            padding: 30px 20px; /* 上下内边距30px，左右20px */
+            font-family: "Arial", "微软雅黑", sans-serif; /* 适配中文字体 */
+            background-color: #f8f9fa; /* 浅灰色背景，不刺眼 */
         }
+
+        /* 网站标题（sword）样式 */
+        .site-title {
+            font-size: 36px;
+            color: #2c3e50; /* 深灰色，不刺眼 */
+            margin-bottom: 10px;
+        }
+
+        /* 个人信息卡片：加边框和背景，更整洁 */
+        .profile-card {
+            max-width: 600px; /* 最大宽度600px，避免太宽 */
+            margin: 20px auto; /* 水平居中 */
+            padding: 25px;
+            background-color: white;
+            border-radius: 12px; /* 圆角 */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* 轻微阴影，有层次感 */
+        }
+
+        /* 个人信息标题（比如“基本信息”） */
+        .profile-title {
+            font-size: 22px;
+            color: #3498db; /* 蓝色，突出重点 */
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee; /* 底部横线，分隔区域 */
+            padding-bottom: 10px;
+        }
+
+        /* 信息项样式（姓名、学历） */
+        .info-item {
+            font-size: 18px;
+            margin: 12px 0;
+            color: #333;
+        }
+
+        /* 爱好列表样式 */
+        .hobbies {
+            list-style: none; /* 去掉默认圆点 */
+            padding: 0;
+            display: flex; /* 横向排列 */
+            flex-wrap: wrap; /* 屏幕小时自动换行 */
+            justify-content: center; /* 居中 */
+            gap: 10px; /* 爱好之间的间距 */
+            margin-top: 15px;
+        }
+
+        .hobbies li {
+            background-color: #e3f2fd; /* 浅蓝色背景 */
+            color: #1976d2; /* 深蓝色文字 */
+            padding: 8px 16px;
+            border-radius: 20px; /* 圆形标签 */
+            font-size: 16px;
+        }
+
+        /* 图片样式优化 */
         img {
-            max-width: 80%; /* 图片最大宽度80%，避免太大 */
-            margin: 15px 0; /* 图片上下留间距 */
-            border-radius: 8px; /* 图片圆角（可选，好看） */
+            max-width: 70%; /* 图片稍微缩小，避免和信息区拥挤 */
+            margin: 20px auto; /* 上下间距20px，水平居中 */
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); /* 图片轻微阴影 */
+            display: block; /* 避免图片底部多余空隙 */
         }
     </style>
 </head>
 <body>
-    <!-- 网页名称（页面上显示的大标题） -->
-    <h1>sword</h1>
+    <!-- 网站标题 -->
+    <h1 class="site-title">sword</h1>
 
-    <!-- 第一张图片：src替换成你的图片文件名 -->
-    <img src="images/pic1.jpg" alt="第一张图片">
+    <!-- 个人信息卡片 -->
+    <div class="profile-card">
+        <h2 class="profile-title">基本信息</h2>
+        
+        <!-- 姓名：替换成你的真实姓名 -->
+        <div class="info-item">姓名：邵杰</div>
+        
+        <!-- 学历：替换成你的真实学历 -->
+        <div class="info-item">学历：本科 - 数学与应用数学</div>
+        
+        <!-- 爱好兴趣：替换成你的真实爱好，可增减列表项 -->
+        <div class="info-item">爱好兴趣：
+            <ul class="hobbies">
+                <li>奔跑</li>
+                <li>健身</li>
+                <li>摄影</li>
+                <li>旅行</li>
+            </ul>
+        </div>
+    </div>
 
-    <!-- 第二张图片：src替换成你的图片文件名 -->
-    <img src="images/pic2.jpg" alt="第二张图片">
-
-    <!-- 第二张图片：src替换成你的图片文件名 -->
-    <img src="images/pic3.jpg" alt="第三张图片">
+    <!-- 原有图片（路径不变，无需修改） -->
+    <img src="images/pic1.jpg" alt="图片1">
+    <img src="images/pic2.jpg" alt="图片2">
+    <img src="images/pic3.jpg" alt="图片3">
 </body>
 </html>
