@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sword's 相册</title>
+    <style>
+        /* 复用主页样式，保持风格统一 */
+        body {
+            text-align: center;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 20px;
+        }
+        .nav-links a {
+            margin: 0 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+        }
+        h1 {
+            color: #333;
+            margin: 30px 0;
+        }
+        /* 相册容器（支持更多照片，自动换行） */
+        .album-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* 相册图片样式 */
+        .album-img {
+            width: calc(25% - 15px); /* 一行4张（可修改为3张/5张） */
+            max-width: 350px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .album-img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        /* 大图模态框（点击放大功能） */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #fff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .close-btn:hover {
+            color: #bbb;
+        }
+        /* 页脚样式 */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        /* 响应式调整 */
+        @media (max-width: 1200px) {
+            .album-img { width: calc(33.333% - 14px); } /* 平板：一行3张 */
+        }
+        @media (max-width: 768px) {
+            .album-img { width: calc(50% - 10px); } /* 手机：一行2张 */
+            .nav-container { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏（保持与主页一致） -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="logo">sword</a> <!-- 跳转回主页 -->
+            <div class="nav-links">
+                <a href="index.html#home">首页</a>
+                <a href="album.html">相册</a>
+                <a href="index.html#plog">日志</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 相册标题 -->
+    <h1>我的相册</h1>
+
+    <!-- 相册图片区（可添加无限张照片，自动排版） -->
+    <div class="album-container">
+        <!-- 原有6张图 -->
+        <img src="images/pic1.jpg" alt="图片描述1" class="album-img">
+        <img src="images/pic2.jpg" alt="图片描述2" class="album-img">
+        <img src="images/pic3.jpg" alt="图片描述3" class="album-img">
+        <img src="images/pic4.jpg" alt="图片描述4" class="album-img">
+        <img src="images/pic5.jpg" alt="图片描述5" class="album-img">
+        <img src="images/pic6.jpg" alt="图片描述6" class="album-img">
+        <img src="images/pic7.png" alt="图片描述7" class="album-img">
+        <img src="images/pic8.jpg" alt="图片描述8" class="album-img">
+        <img src="images/pic9.jpg" alt="图片描述9" class="album-img">
+        <img src="images/pic10.jpg" alt="图片描述10" class="album-img">
+        <img src="images/pic11.jpg" alt="图片描述5" class="album-img">
+        <img src="images/pic12.jpg" alt="图片描述6" class="album-img">
+        <img src="images/pic13.jpg" alt="图片描述7" class="album-img">
+        <img src="images/pic14.jpg" alt="图片描述8" class="album-img">
+        <img src="images/pic15.jpg" alt="图片描述9" class="album-img">
+        <img src="images/pic16.jpg" alt="图片描述10" class="album-img">
+        <img src="images/pic17.jpg" alt="图片描述10" class="album-img">
+
+        <!-- 可继续添加... -->
+    </div>
+
+    <!-- 大图模态框（点击放大功能） -->
+    <div class="modal" id="imgModal">
+        <span class="close-btn">&times;</span>
+        <img class="modal-img" id="modalImg">
+    </div>
+
+    <!-- 大图查看JS -->
+    <script>
+        const modal = document.getElementById('imgModal');
+        const modalImg = document.getElementById('modalImg');
+        const albumImgs = document.querySelectorAll('.album-img');
+        const closeBtn = document.querySelector('.close-btn');
+
+        // 点击图片显示大图
+        albumImgs.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = 'flex';
+                modalImg.src = this.src;
+                modalImg.alt = this.alt;
+            }
+        });
+
+        // 关闭大图（按钮/背景/ESC键）
+        closeBtn.onclick = () => modal.style.display = 'none';
+        modal.onclick = (e) => e.target === modal && (modal.style.display = 'none');
+        document.onkeydown = (e) => e.key === 'Escape' && modal.style.display === 'flex' && (modal.style.display = 'none');
+    </script>
+
+    <footer>
+        <p>© 2025 sword's 个人空间 | 记录生活，分享美好</p>
+    </footer>
+</body>
+</html>
