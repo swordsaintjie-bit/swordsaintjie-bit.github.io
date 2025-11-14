@@ -5,104 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>sword's space</title>
     <style>
-        /* 基础样式重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
 
+        /* 保留你原来的其他样式（比如h1、body的基础样式） */
         body {
-            background-color: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        /* 导航栏样式 */
-        nav {
-            background-color: #2c3e50;
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: #3498db;
-        }
-
-        /* 主容器样式 */
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-
-        /* 标题样式 */
-        header {
             text-align: center;
-            margin: 3rem 0;
+            margin: 20px;
+            background-color: #f5f5f5; /* 可选：加个浅背景，图片更突出 */
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
+            color: #333;
+            margin-bottom: 30px;
         }
 
-        .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2rem;
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 20px;
+        }
+        .nav-links a {
+            margin: 0 15px;
+            color: #333;
+            text-decoration: none;
+            font-size: 1.1rem;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
         }
 
-        /* 图片展示区 */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
+        /* 👇 新添加：相册容器（控制一行三图） */
+        .album-container {
+            display: flex; /* 弹性布局，自动排列 */
+            flex-wrap: wrap; /* 超出一行自动换行 */
+            justify-content: center; /* 水平居中对齐 */
+            gap: 20px; /* 图片之间的间距（上下左右各20px） */
+            max-width: 1200px; /* 容器最大宽度，避免屏幕太宽时图片变形 */
+            margin: 0 auto; /* 让容器自身在页面中居中 */
+            padding: 0 20px; /* 左右留一点点内边距，避免贴边 */
         }
 
-        .gallery img {
+        /* 👇 新添加：小图样式 */
+        .album-img {
+            width: calc(33.333% - 14px); /* 3张图均分宽度，减去gap的影响 */
+            max-width: 300px; /* 小图最大宽度限制，避免太宽 */
+            height: 300px; /* 可选：固定小图高度，避免图片大小不一导致排版乱 */
+            object-fit: cover; /* 保持图片比例，裁剪多余部分（避免拉伸） */
+            border-radius: 8px; /* 可选：图片圆角，更美观 */
+            cursor: pointer; /* 鼠标悬停显示「手型」，提示可点击 */
+            transition: transform 0.2s ease; /* 悬停动画：轻微放大，更丝滑 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 可选：加个阴影，更有层次感 */
+        }
+
+        /* 👇 新添加：小图悬停效果 */
+        .album-img:hover {
+            transform: scale(1.03); /* 悬停时放大3% */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15); /* 阴影加深 */
+        }
+
+        /* 👇 新添加：大图模态框（默认隐藏） */
+        .modal {
+            display: none; /* 默认不显示 */
+            position: fixed; /* 固定定位，覆盖整个屏幕 */
+            z-index: 9999; /* 层级最高，避免被其他内容遮挡 */
+            left: 0;
+            top: 0;
             width: 100%;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s, box-shadow 0.3s;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* 黑色半透明背景（Mac风格） */
+            align-items: center; /* 垂直居中大图 */
+            justify-content: center; /* 水平居中大图 */
+            padding: 20px; /* 左右留内边距，避免大图贴边 */
         }
 
-        .gallery img:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        /* 👇 新添加：大图样式 */
+        .modal-img {
+            max-width: 90%; /* 大图最大宽度不超过屏幕90% */
+            max-height: 90%; /* 大图最大高度不超过屏幕90% */
+            object-fit: contain; /* 保持图片比例，不裁剪（Mac用户习惯） */
+            border-radius: 4px; /* 可选：大图轻微圆角 */
+        }
+
+        /* 👇 新添加：关闭按钮 */
+        .close-btn {
+            position: absolute; /* 绝对定位在右上角 */
+            top: 25px;
+            right: 35px;
+            color: #fff; /* 白色按钮 */
+            font-size: 40px; /* 按钮大小 */
+            font-weight: bold; /* 加粗 */
+            cursor: pointer; /* 手型指针 */
+            transition: color 0.3s ease; /* 颜色过渡动画 */
+        }
+
+        /* 👇 新添加：关闭按钮悬停效果 */
+        .close-btn:hover {
+            color: #bbb; /* 悬停时变浅灰色 */
         }
 
         /* Plog 区域样式 */
@@ -139,7 +142,7 @@
 
         .plog-image {
             width: 100%;
-            height: 200px;
+            height: 400px;
             object-fit: cover;
         }
 
@@ -209,7 +212,7 @@
             <a href="#" class="logo">sword</a>
             <div class="nav-links">
                 <a href="#home">首页</a>
-                <a href="#gallery">相册</a>
+                <a href="album.html">相册</a>
                 <a href="#plog">日志</a>
             </div>
         </div>
@@ -227,25 +230,77 @@
         <h2 class="section-title">关于我</h2>
         <div style="background: white; padding: 2rem; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
             <p>大家好！我是 sword,一名热爱生活的学生。</p>
-            <p>我喜欢用镜头记录生活中的美好瞬间，也热衷于在文字中表达自己的思考。</p>
+            <p>我喜欢用镜头记录生活，也热衷于在文字中表达自己的思考。</p>
         
             <h3 style="color: #2c3e50; margin: 1.5rem 0 1rem;">我的兴趣</h3>
             <ul style="padding-left: 1.5rem; line-height: 1.8;">
                 <li>[摄影——尤其喜欢捕捉自然风景和城市人文]</li>
-                <li>[星空——偏爱无垠的宇宙]</li>
+                <li>[星空——偏爱]</li>
                 <li>[旅行——探索世界]</li>
             </ul>
         
-            <p>希望通过这个空间，分享我的生活与感悟，也期待认识更多志同道合的朋友！</p>
+            <p>希望你喜欢</p>
         </div>
     </section>
 
         <!-- 图片展示区 -->
-        <section id="gallery" class="gallery">
-            <img src="images/pic1.jpg" alt="生活瞬间1">
-            <img src="images/pic2.jpg" alt="生活瞬间2">
-            <img src="images/pic3.jpg" alt="生活瞬间3">
-        </section>
+
+    <!-- 保留你原来的标题、其他内容（比如<h1>sword</h1>、简介等） -->
+    <h1>sword</h1>
+
+    <h2 class="section-title" id="album">相册预览</h2> <!-- 添加相册锚点 -->
+    <div class="album-container">
+        <!-- 这里放你的所有图片，按实际图片路径修改 src！ -->
+        <img src="images/pic1.jpg" alt="图片描述1" class="album-img">
+        <img src="images/pic2.jpg" alt="图片描述2" class="album-img">
+        <img src="images/pic3.jpg" alt="图片描述3" class="album-img">
+        <img src="images/pic4.jpg" alt="图片描述1" class="album-img">
+        <img src="images/pic5.jpg" alt="图片描述2" class="album-img">
+        <img src="images/pic6.jpg" alt="图片描述3" class="album-img">
+        <!-- 👉 要加更多图片？直接在这里继续复制<img>标签即可，自动一行三图 -->
+    </div>
+
+    <!-- 👇 这是新添加的「大图模态框」（点击放大的核心，默认隐藏） -->
+    <div class="modal" id="imgModal">
+        <span class="close-btn">&times;</span> <!-- 关闭按钮 -->
+        <img class="modal-img" id="modalImg"> <!-- 大图显示区域 -->
+    </div>
+
+    <script>
+        // 1. 获取页面元素（对应前面的HTML结构）
+        const modal = document.getElementById('imgModal'); // 大图模态框
+        const modalImg = document.getElementById('modalImg'); // 大图显示区域
+        const albumImgs = document.querySelectorAll('.album-img'); // 所有小图
+        const closeBtn = document.querySelector('.close-btn'); // 关闭按钮
+
+        // 2. 给每个小图添加「点击事件」：点击后显示大图
+        albumImgs.forEach(img => {
+            img.onclick = function() {
+                modal.style.display = 'flex'; // 显示模态框（flex布局确保大图居中）
+                modalImg.src = this.src; // 把小图的图片路径赋值给大图
+                modalImg.alt = this.alt; // 把小图的描述赋值给大图
+            }
+        });
+
+        // 3. 点击「关闭按钮」：隐藏大图
+        closeBtn.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        // 4. 点击「模态框背景」：隐藏大图（Mac用户习惯点击空白处关闭）
+        modal.onclick = function(e) {
+            if (e.target === modal) { // 只有点击的是黑色背景（不是大图）才关闭
+                modal.style.display = 'none';
+            }
+        }
+
+        // 5. 按「ESC键」：隐藏大图（Mac常用快捷键，提升体验）
+        document.onkeydown = function(e) {
+            if (e.key === 'Escape' && modal.style.display === 'flex') {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 
         <!-- Plog 区域 -->
         <section id="plog" class="plog-section">
